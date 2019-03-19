@@ -59,7 +59,14 @@ func main() {
 			rNumeralInt += 3
 		}
 	} else if (s.Count(rNumeral, "V")) == 1 {
-		rNumeralInt += 5
+		if (s.Count(rNumeral, "X")) == 1 {
+			rNumeralInt += 15
+		} else if (s.Count(rNumeral, "X")) == 2 {
+			rNumeralInt += 25
+		} else {
+			rNumeralInt += 5
+		}
+
 	} else if (s.Count(rNumeral, "X")) == 1 {
 		rNumeralInt += 10
 	} else if (s.Count(rNumeral, "L")) == 1 {
