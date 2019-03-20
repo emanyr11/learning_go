@@ -1,2 +1,2 @@
 # learning_go
-Projects that i amu using to learn GO
+Projects that i am using to learn GO
