@@ -1,8 +1,5 @@
 package main
 
-import "net/http"
-
-// "strconv"
 // json Encoding
 // http package
 // mux package
@@ -12,53 +9,43 @@ import "net/http"
 
 // creat a global variable books slice of type Book
 
-func getBooks(w http.ResponseWriter, r *http.Request) {
-	// print out the books using encoder
+// getBooks
+// print out the books using encoder
 
-}
+//getBook
 
-func getBook(w http.ResponseWriter, r *http.Request) {
+// Get the url parameters that are passed into the endpoint(id parameter)
 
-	// Get the url parameters that are passed into the endpoint(id parameter)
+// _ is a blank identiier used because only the second item in the range is needed
+// Iterate of the range of books
 
-	// _ is a blank identiier used because only the second item in the range is needed
-	// Iterate of the range of books
+// if the item matches the params id encode the item and return
 
-	// if the item matches the params id encode the item and return
+// If the book doesnt exist point to empty book address
 
-	// If the book doesnt exist point to empty book address
+//createBook
+// create variable book of type book
 
-}
+// create a blank identifier that is a new decoder that refernces the variable
+// Take the json data from post body an martial it into the structure
 
-func createBook(w http.ResponseWriter, r *http.Request) {
+// create a new book for books slice and assign to books
 
-	// create variable book of type book
+// return the new book
 
-	// create a blank identifier that is a new decoder that refernces the variable
-	// Take the json data from post body an martial it into the structure
+//deleteBook
+// Get the url parameters that are passed into the endpoint(id parameter)
 
-	// create a new book for books slice and assign to books
+// Create an index and iterate over the books slice
 
-	// return the new book
+// if the item in the params matches the Item.ID then assign the book to the index then remove it and increment then break
 
-}
+// delete all from :inedex, too index+1: ...
 
-func deleteBook(w http.ResponseWriter, r *http.Request) {
-	// Get the url parameters that are passed into the endpoint(id parameter)
+// return the new books slice with deleted item
 
-	// Create an index and iterate over the books slice
-
-	// if the item in the params matches the Item.ID then assign the book to the index then remove it and increment then break
-
-	// delete all from :inedex, too index+1: ...
-
-	// return the new books slice with deleted item
-
-}
-
-func updateBook(w http.ResponseWriter, r *http.Request) {
-	// Delete the book then create the book
-}
+//updateBook
+// Delete the book then create the book
 
 func main() {
 	//Initialize the router
