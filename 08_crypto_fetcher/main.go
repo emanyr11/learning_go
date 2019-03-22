@@ -5,7 +5,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 )
 
@@ -20,20 +19,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	q := url.Values{}
-	q.Add("start", "1")
-	q.Add("limit", "5000")
-	q.Add("convert", "AUD")
+	// q := url.Values{}
+	// q.Add("start", "1")
+	// q.Add("limit", "5000")
+	// q.Add("convert", "AUD")
 
 	req.Header.Set("Accepts", "application/json")
 	req.Header.Add("X-CMC_PRO_API_KEY", "64bc57e2-eb81-4dc3-86ee-f6d29ddd08f2")
-	req.URL.RawQuery = q.Encode()
+	//req.URL.RawQuery = q.Encode()
 
 	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error sending request to server")
-		os.Exit(1)
-	}
+	// if err != nil {
+	// 	fmt.Println("Error sending request to server")
+	// 	os.Exit(1)
+	// }
 	fmt.Println(resp.Status)
 	respBody, _ := ioutil.ReadAll(resp.Body)
 	fmt.Println(string(respBody))

@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"math"
 )
+/*
+List of Methods you can implement on different structs
+*/
 
 // Define  the interface
 type Shape interface {
