@@ -48,13 +48,16 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 
 	// Create an index and iterate over the books slice
 
-	// if the item in the params matches the Item.ID then assign the book to the index then remove it and increment
-	// then break
+	// if the item in the params matches the Item.ID then assign the book to the index then remove it and increment then break
 
 	// delete all from :inedex, too index+1: ...
 
 	// return the new books slice with deleted item
 
+}
+
+func updateBook(w http.ResponseWriter, r *http.Request) {
+	// Delete the book then create the book
 }
 
 func main() {
