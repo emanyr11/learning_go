@@ -1,59 +1,101 @@
 package main
 
-// json Encoding
-// http package
-// mux package
-// log package
+import (
+	"encoding/json"
+	"log"
+	"net/http"
 
-// Mock data structure for testing that takes in an author struct
+	"github.com/gorilla/mux"
+)
 
-// creat a global variable books slice of type Book
+// Create struct of mock data
 
-// getBooks
-// print out the books using encoder
+type Person struct {
+	Socialsecurity string  `json:"socialsecurity"`
+	Firstname      string  `json:"firstname"`
+	Lastname       string  `json:"lastname"`
+	Email          string  `json:"email"`
+	// pointer to the address struct using type address
+	Adress         *Adress `json:"adress"`
+}
 
-//getBook
+// Adress struct called by person struct to initialse the adress
+type Adress struct {
+	City  string `json:"city"`
+	State string `json:"state"`
+}
 
-// Get the url parameters that are passed into the endpoint(id parameter)
+// A slice of type Person called people 
+var people []Person
 
-// _ is a blank identiier used because only the second item in the range is needed
-// Iterate of the range of books
+// function call to retrieve all people
+func getPeople(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(people)
+}
 
-// if the item matches the params id encode the item and return
+// Fucntion call te retrieve a person specified by the socialsecurity number
+func getPerson(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for _, item := range people {
+		if item.Socialsecurity == params["socialsecurity"] {
+			json.NewEncoder(w).Encode(item)
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(people)
+}
 
-// If the book doesnt exist point to empty book address
+// function call to create a person by martialing data and assigning to a varaible person 
+func createPerson(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var person Person
+	_ = json.NewDecoder(r.Body).Decode(&person)
+	people = append(people, person)
+	json.NewEncoder(w).Encode(person)
 
-//createBook
-// create variable book of type book
+}
 
-// create a blank identifier that is a new decoder that refernces the variable
-// Take the json data from post body an martial it into the structure
+func deletePerson(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, item := range people {
+		if item.Socialsecurity == params["socialsecurity"] {
+			people = append(people[:index], people[index+1:]...)
+			break
+		}
+	}
+	json.NewEncoder(w).Encode(people)
+}
 
-// create a new book for books slice and assign to books
+func updatePerson(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "applcation/json")
+	params := mux.Vars(r)
+	for index, item := range people {
+		if item.Socialsecurity == params["socialsecurity"] {
+			people = append(people[:index], people[index+1:]...)
+			var person Person
+			person.Socialsecurity = params["socialsecurity"]
+			_ = json.NewDecoder(r.Body).Decode(&person)
+			people = append(people, person)
+			json.NewEncoder(w).Encode(person)
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(people)
 
-// return the new book
-
-//deleteBook
-// Get the url parameters that are passed into the endpoint(id parameter)
-
-// Create an index and iterate over the books slice
-
-// if the item in the params matches the Item.ID then assign the book to the index then remove it and increment then break
-
-// delete all from :inedex, too index+1: ...
-
-// return the new books slice with deleted item
-
-//updateBook
-// Delete the book then create the book
+}
 
 func main() {
-	//Initialize the router
-
-	// Mock Data
-
-	//Creat route handlers and establish endpoints
-
-	// Run the server
-
+	router := mux.NewRouter()
+	people = append(people, Person{Socialsecurity: "1", Firstname: "John", Lastname: "Doe", Email: "john@gmail.com", Adress: &Adress{City: "Perth", State: "WA"}})
+	people = append(people, Person{Socialsecurity: "2", Firstname: "Jane", Lastname: "Doe", Email: "Jane@gmail.com", Adress: &Adress{City: "Melboune", State: "Victoria"}})
+	people = append(people, Person{Socialsecurity: "3", Firstname: "John", Lastname: "Doe", Email: "askdh@gmail.com", Adress: &Adress{City: "Sydney", State: "NSW"}})
+	router.HandleFunc("/api/people", getPeople).Methods("GET")
+	router.HandleFunc("/api/person/{socialsecurity}", getPerson).Methods("GET")
+	router.HandleFunc("/api/person", createPerson).Methods("POST")
+	router.HandleFunc("/api/person/{socialsecurity}", deletePerson).Methods("DELETE")
+	router.HandleFunc("/api/person/{socialsecurity}", updatePerson).Methods("PUT")
+	log.Fatal(http.ListenAndServe(":8000", router))
 }

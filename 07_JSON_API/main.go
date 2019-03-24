@@ -53,10 +53,14 @@ func getBook(w http.ResponseWriter, r *http.Request) {
 
 func createBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	// create variable book of type book
 	var book Book
+	// create a blank identifier that is a new decoder that refernces the variable
 	_ = json.NewDecoder(r.Body).Decode(&book)
 	book.ID = strconv.Itoa(rand.Intn(1000000))
+	// create a new book
 	books = append(books, book)
+	// encode the new book
 	json.NewEncoder(w).Encode(book)
 }
 
@@ -79,13 +83,18 @@ func updateBook(w http.ResponseWriter, r *http.Request) {
 
 func deleteBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	// Get the url parameters that are passed into the endpoint(id parameter)
 	params := mux.Vars(r)
+	// Create an index and iterate over the books slice
 	for index, item := range books {
+		// if the item in the params matches the Item.ID then assign the book to the index then remove it and increment
+		// then break
 		if item.ID == params["id"] {
 			books = append(books[:index], books[index+1:]...)
 			break
 		}
 	}
+	// encode the new books slice
 	json.NewEncoder(w).Encode(books)
 }
 
